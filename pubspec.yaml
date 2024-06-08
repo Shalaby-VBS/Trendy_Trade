@@ -30,6 +30,7 @@ dependencies:
   shimmer: ^2.0.0
   easy_localization: ^3.0.7
   salomon_bottom_bar: ^3.3.2
+  event_bus: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -78,9 +78,9 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ProductsResponse> getProducts() async {
+  Future<ProductsResponse> getProducts({int pageSize = 10000}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'PageSize': pageSize};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
@@ -181,6 +181,36 @@ class _ApiService implements ApiService {
               baseUrl,
             ))));
     final value = GetCartResponseModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<CategoriesResponseModel>> getCategories() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<CategoriesResponseModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'ProductCategory',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) =>
+            CategoriesResponseModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

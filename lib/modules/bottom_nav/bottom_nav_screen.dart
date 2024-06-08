@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:trendy_trade/modules/cart/ui/cart_screen.dart';
 
-import '../../core/di/dependency_injection.dart';
-import '../home/logic/products/products_cubit.dart';
 import '../home/ui/screens/home_screen.dart';
 import '../profile/profile_screen.dart';
 

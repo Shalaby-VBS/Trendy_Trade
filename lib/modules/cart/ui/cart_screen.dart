@@ -1,10 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trendy_trade/modules/cart/logic/cart_cubit.dart';
-import 'package:trendy_trade/modules/cart/logic/cart_state.dart';
+import 'package:trendy_trade/core/helpers/extensions.dart';
+import 'package:trendy_trade/core/helpers/spaces.dart';
+import 'package:trendy_trade/core/themes/text_styles.dart';
 
-import '../../../core/di/dependency_injection.dart';
+import '../../../core/helpers/event_bus.dart';
 import '../../../core/widgets/appbars.dart';
+import '../../home/ui/widgets/product_plus_and_minus.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({
@@ -16,90 +18,136 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // final List<ProductModel> cartItems = [
-  //   ProductModel(name: 'Product 1', price: 29.99, quantity: 1),
-  //   ProductModel(name: 'Product 2', price: 49.99, quantity: 2),
-  //   ProductModel(name: 'Product 3', price: 19.99, quantity: 1),
-  // ];
+  @override
+  void initState() {
+    super.initState();
+    eventBus.on<CartIconEvent>().listen((event) {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<CartCubit>()..getCartItems(),
-      child: Scaffold(
-        appBar: AppBars.auth(
-            context: context, withBackButton: false, title: "Cart"),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              BlocBuilder<CartCubit, CartState>(
-                buildWhen: (previous, current) =>
-                    current is GetCartLoading ||
-                    current is GetCartSuccess ||
-                    current is GetCartError,
-                builder: (context, state) {
-                  return state.maybeWhen(getCartLoading: () {
-                    return const Center(child: CircularProgressIndicator());
-                  }, getCartSuccess: (cartItems) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: cartItems?.length,
-                        itemBuilder: (context, index) {
-                          final productModel = cartItems?[index];
-                          return Card(
-                            elevation: 4.0,
-                            margin: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: ListTile(
-                              title: Text(productModel?.productName ?? ''),
-                              subtitle: Text('Price: \$${productModel?.price}'),
-                              trailing:
-                                  Text('Quantity: ${productModel?.quantity}'),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }, getCartError: (errorHandler) {
-                    return Text(errorHandler.apiErrorModel.message ?? '');
-                  }, orElse: () {
-                    return const SizedBox.shrink();
-                  });
-                },
-              ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: cartItems.length,
-              //     itemBuilder: (context, index) {
-              //       final productModel = cartItems[index];
-              //       return Card(
-              //         elevation: 4.0,
-              //         margin: const EdgeInsets.symmetric(vertical: 10.0),
-              //         child: ListTile(
-              //           title: Text(productModel.name ?? ''),
-              //           subtitle: Text('Price: \$${productModel.price}'),
-              //           trailing: Text('Quantity: ${productModel.quantity}'),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  // Add your checkout logic here
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.purple,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 50.0, vertical: 15.0),
+    return Scaffold(
+      appBar:
+          AppBars.auth(context: context, withBackButton: false, title: "Cart"),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: cartItems.isNullOrEmpty()
+            ? Center(
+                child: Text(
+                  'No Items in Cart.',
+                  style: TextStyles.size18BlackW600,
                 ),
-                child: const Text('Checkout'),
+              )
+            : Column(
+                children: [
+                  ListView.builder(
+                    itemCount: cartItems.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final productModel = cartItems[index];
+                      return Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              // Product Image
+                              CachedNetworkImage(
+                                imageUrl: productModel.pictureURL ?? '',
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  width: 70.0,
+                                  height: 70.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(width: 15.0),
+                              // Product Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Product Name
+                                    Text(
+                                      productModel.name ?? '',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    // Product Price
+                                    Text(
+                                      'Price: \$${productModel.price}',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    // Product Quantity
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Quantity: ${productModel.quantity}',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        ProductPlusAndMinus(
+                                          productModel: productModel,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      // start check out process
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.purple,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0,
+                        vertical: 15.0,
+                      ),
+                    ),
+                    child: const Text('Checkout'),
+                  ),
+                  verticalSpace(20),
+                ],
               ),
-            ],
-          ),
-        ),
       ),
     );
   }

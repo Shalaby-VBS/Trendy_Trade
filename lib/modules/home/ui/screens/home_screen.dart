@@ -8,44 +8,30 @@ import '../../../../core/di/dependency_injection.dart';
 import '../../logic/products/products_state.dart';
 import '../widgets/product_card.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<ProductsCubit>()..getProducts(),
-      child: RefreshIndicator(
-        onRefresh: _refresh,
-        child: Scaffold(
-          appBar: AppBars.auth(context: context, withBackButton: false),
-          body: BlocBuilder<ProductsCubit, ProductsState>(
-            builder: (context, state) {
-              List<ProductModel> products =
-                  context.read<ProductsCubit>().products;
-              return state is Loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        return ProductCard(productModel: products[index]);
-                      },
-                    );
-            },
-          ),
+      child: Scaffold(
+        appBar: AppBars.auth(context: context, withBackButton: false),
+        body: BlocBuilder<ProductsCubit, ProductsState>(
+          builder: (context, state) {
+            List<ProductModel> products =
+                context.read<ProductsCubit>().products;
+            return state is Loading
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return ProductCard(productModel: products[index]);
+                    },
+                  );
+          },
         ),
       ),
     );
-  }
-
-  Future<void> _refresh() async {
-    if (mounted) {
-      context.read<ProductsCubit>().getProducts();
-    }
   }
 }
