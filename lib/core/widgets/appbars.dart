@@ -8,6 +8,7 @@ class AppBars {
   static AppBar auth({
     required BuildContext context,
     required bool withBackButton,
+    String? title,
   }) {
     return AppBar(
       backgroundColor: ColorsManager.primary,
@@ -17,7 +18,7 @@ class AppBars {
           withBackButton ? const AppBarBackButton() : const SizedBox.shrink(),
       titleSpacing: 0,
       centerTitle: true,
-      title: AppTexts.buildAppBarTitle("Trendy Trade"),
+      title: AppTexts.buildAppBarTitle(title ?? "Trendy Trade"),
     );
   }
 }

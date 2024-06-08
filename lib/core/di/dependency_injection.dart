@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:trendy_trade/modules/login/logic/toggle/toggle_cubit.dart';
 
+import '../../modules/cart/data/repo/cart_repo.dart';
+import '../../modules/cart/logic/cart_cubit.dart';
 import '../../modules/home/data/repos/product_repo.dart';
 import '../../modules/home/data/repos/products_repo.dart';
 import '../../modules/home/logic/product/product_cubit.dart';
@@ -38,4 +40,8 @@ Future<void> setupGetIt() async {
   // MARK: - Products.
   getIt.registerLazySingleton<ProductRepo>(() => ProductRepo(getIt()));
   getIt.registerFactory<ProductCubit>(() => ProductCubit(getIt()));
+
+  // MARK: - Cart.
+   getIt.registerLazySingleton<CartRepo>(() => CartRepo(getIt()));
+  getIt.registerFactory<CartCubit>(() => CartCubit(getIt()));
 }
