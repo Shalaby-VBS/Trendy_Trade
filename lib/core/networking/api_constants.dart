@@ -9,6 +9,7 @@ class ApiUrls {
   static const String products = "Product";
   static const String addToCart = "Cart/update";
   static const String getCart = "Cart";
+  static const String profile = "Account";
 }
 
 class ApiErrors {

@@ -10,6 +10,8 @@ import '../../modules/home/logic/product/product_cubit.dart';
 import '../../modules/home/logic/products/products_cubit.dart';
 import '../../modules/login/data/repos/login_repo.dart';
 import '../../modules/login/logic/login/login_cubit.dart';
+import '../../modules/profile/data/repos/profile_repo.dart';
+import '../../modules/profile/logic/profile_cubit.dart';
 import '../../modules/register/data/repos/register_repo.dart';
 import '../../modules/register/logic/register_cubit.dart';
 import '../networking/api_service.dart';
@@ -42,6 +44,10 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<ProductCubit>(() => ProductCubit(getIt()));
 
   // MARK: - Cart.
-   getIt.registerLazySingleton<CartRepo>(() => CartRepo(getIt()));
+  getIt.registerLazySingleton<CartRepo>(() => CartRepo(getIt()));
   getIt.registerFactory<CartCubit>(() => CartCubit(getIt()));
+
+  /// MARK: - Profile.
+  getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getIt()));
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
 }
