@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:trendy_trade/core/helpers/extensions.dart';
 
 import '../../../../core/helpers/spaces.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/themes/text_styles.dart';
 import '../../../../core/utils/app_utils.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -35,7 +37,40 @@ class RegisterScreen extends StatelessWidget {
             verticalSpace(24),
             const RegisterForm(),
             verticalSpace(24),
-            BlocBuilder<RegisterCubit, RegisterState>(
+            BlocConsumer<RegisterCubit, RegisterState>(
+              listener: (context, state) {
+                state.whenOrNull(
+                  success: (registerResponse) {
+                    context.pushReplacementNamed(Routes.bottomNavScreen);
+                  },
+                  error: (error) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        icon: const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                          size: 32,
+                        ),
+                        content: Text(
+                          error,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            // ignore: prefer_const_constructors
+                            child: Text(
+                              'Got it',
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
               builder: (context, state) {
                 return AppButton(
                   onPressed: () {

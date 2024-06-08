@@ -32,3 +32,11 @@ extension HexColor on Color {
     return Color(int.parse(hexColorString, radix: 16));
   }
 }
+
+extension StringExtension on String? {
+  bool isNullOrEmpty() => this == null || this == "";
+}
+
+extension ListExtension<T> on List<T>? {
+  bool isNullOrEmpty() => this == null || this!.isEmpty;
+}

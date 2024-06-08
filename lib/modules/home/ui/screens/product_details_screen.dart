@@ -1,39 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:trendy_trade/core/helpers/spaces.dart';
 import 'package:trendy_trade/core/widgets/appbars.dart';
+import 'package:trendy_trade/modules/home/data/models/product_model.dart';
 
-import '../../logic/product/product_cubit.dart';
-import '../../logic/product/product_state.dart';
+import '../widgets/details_product_image.dart';
 
-class ProductDetailsScreen extends StatefulWidget {
-  final int? productId;
-  const ProductDetailsScreen({super.key, this.productId});
-
-  @override
-  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
-}
-
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  @override
-  void initState() {
-    BlocProvider.of<ProductCubit>(context)
-        .getSingleProduct(productId: widget.productId ?? 1);
-    super.initState();
-  }
+class ProductDetailsScreen extends StatelessWidget {
+  final ProductModel? productModel;
+  const ProductDetailsScreen({super.key, required this.productModel});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBars.auth(context: context, withBackButton: true),
-      body: BlocBuilder<ProductCubit, ProductState>(
-        builder: (context, state) {
-          return ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            children: [],
-          );
-        },
+      appBar: AppBars.auth(
+          context: context, withBackButton: true, title: productModel?.name),
+      body: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DetailsProductImage(
+              image: productModel?.pictureURL,
+            ),
+            verticalSpace(16.h),
+            Text(
+              productModel?.name ?? '',
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            verticalSpace(8.h),
+            Text(
+              productModel?.description ?? '',
+              style: TextStyle(fontSize: 16.sp, color: Colors.black),
+            ),
+            verticalSpace(8.h),
+            Text(
+              'Price: \$${productModel?.price}',
+              style: TextStyle(fontSize: 16.sp, color: Colors.black),
+            ),
+          ],
+        ),
       ),
     );
   }

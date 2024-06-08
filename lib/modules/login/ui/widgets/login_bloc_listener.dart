@@ -19,7 +19,7 @@ class LoginBlocListener extends StatelessWidget {
       listener: (context, state) {
         state.whenOrNull(
           success: (dynamic) {
-            context.pushNamed(Routes.homeScreen);
+            context.pushNamed(Routes.bottomNavScreen);
           },
           error: (error) {
             setupErrorState(context, error);

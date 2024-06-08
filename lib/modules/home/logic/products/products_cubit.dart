@@ -7,7 +7,7 @@ import '../../data/repos/products_repo.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   final ProductsRepo _productsRepo;
 
-  ProductsCubit(this._productsRepo) : super(ProductsState.initial());
+  ProductsCubit(this._productsRepo) : super(const ProductsState.initial());
 
   final List<ProductModel> products = [];
 
