@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/helpers/event_bus.dart';
 import '../../../../core/helpers/spaces.dart';
 import '../../../../core/themes/text_styles.dart';
 import '../../data/models/product_model.dart';
 
 class ProductPlusAndMinus extends StatefulWidget {
-  final ProductModel? productModel;
-  const ProductPlusAndMinus({super.key, this.productModel});
+  final ProductModel productModel;
+  const ProductPlusAndMinus({super.key, required this.productModel});
 
   @override
   State<ProductPlusAndMinus> createState() => _ProductPlusAndMinusState();
 }
 
 class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
-  var productQuantity = 0;
-
-  final List<ProductModel> cartItems = [
-    // ProductModel(name: 'Product 1', price: 29.99, quantity: 1),
-    // ProductModel(name: 'Product 2', price: 49.99, quantity: 2),
-    // ProductModel(name: 'Product 3', price: 19.99, quantity: 1),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -40,8 +33,15 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
             ),
             onPressed: () {
               setState(() {
-                if (productQuantity > 0) {
-                  productQuantity--;
+                if (widget.productModel.quantity == 1) {
+                  cartItems.remove(widget.productModel);
+                  eventBus.fire(CartIconEvent(cartItems));
+                }
+
+                if (widget.productModel.quantity! > 0) {
+                  widget.productModel.quantity =
+                      widget.productModel.quantity! - 1;
+                  eventBus.fire(CartIconEvent(cartItems));
                 }
               });
             },
@@ -53,7 +53,10 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
           width: 20,
           height: 20,
           child: Text(
-            productQuantity == 0 ? '0' : '$productQuantity',
+            widget.productModel.quantity == null ||
+                    widget.productModel.quantity == 0
+                ? '0'
+                : '${widget.productModel.quantity}',
             style: TextStyles.size16BlackW600,
           ),
         ),
@@ -73,8 +76,14 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
             ),
             onPressed: () {
               setState(() {
-                if (productQuantity < 9) {
-                  productQuantity++;
+                if (widget.productModel.quantity == null ||
+                    widget.productModel.quantity! < 9) {
+                  widget.productModel.quantity =
+                      widget.productModel.quantity! + 1;
+                  eventBus.fire(CartIconEvent(cartItems));
+                  if (!cartItems.contains(widget.productModel)) {
+                    cartItems.add(widget.productModel);
+                  }
                 }
               });
             },
