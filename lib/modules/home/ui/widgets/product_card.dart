@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trendy_trade/core/helpers/extensions.dart';
 
+import '../../../../core/helpers/event_bus.dart';
 import '../../../../core/helpers/spaces.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/themes/text_styles.dart';
@@ -18,6 +19,14 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  @override
+  void initState() {
+    super.initState();
+    eventBus.on<CartIconEvent>().listen((event) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -43,11 +52,8 @@ class _ProductCardState extends State<ProductCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: widget.productModel?.id ?? '',
-              child: ProductImage(
-                image: widget.productModel?.pictureURL,
-              ),
+            ProductImage(
+              image: widget.productModel?.pictureURL,
             ),
             Text(
               widget.productModel?.name ?? 'Product Name',
@@ -74,7 +80,9 @@ class _ProductCardState extends State<ProductCard> {
                   style: TextStyles.size18BlackW600,
                 ),
                 const Spacer(),
-                const ProductPlusAndMinus(),
+                ProductPlusAndMinus(
+                  productModel: widget.productModel!,
+                ),
               ],
             )
           ],
