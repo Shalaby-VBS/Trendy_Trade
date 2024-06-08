@@ -185,20 +185,33 @@ class _ApiService implements ApiService {
   }
 
   @override
+<<<<<<< HEAD
+  Future<LoginResponse> getProfileData() async {
+=======
   Future<List<CategoriesResponseModel>> getCategories() async {
+>>>>>>> origin/main
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
+<<<<<<< HEAD
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+=======
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<CategoriesResponseModel>>(Options(
+>>>>>>> origin/main
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
+<<<<<<< HEAD
+              'Account',
+=======
               'ProductCategory',
+>>>>>>> origin/main
               queryParameters: queryParameters,
               data: _data,
             )
@@ -207,10 +220,14 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
+<<<<<<< HEAD
+    final value = LoginResponse.fromJson(_result.data!);
+=======
     var value = _result.data!
         .map((dynamic i) =>
             CategoriesResponseModel.fromJson(i as Map<String, dynamic>))
         .toList();
+>>>>>>> origin/main
     return value;
   }
 
