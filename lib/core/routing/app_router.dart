@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trendy_trade/modules/bottom_nav/bottom_nav_screen.dart';
+import 'package:trendy_trade/modules/cart/ui/checkout_screen.dart';
 import 'package:trendy_trade/modules/home/ui/screens/product_details_screen.dart';
 import 'package:trendy_trade/modules/login/logic/login/login_cubit.dart';
 import 'package:trendy_trade/modules/login/logic/toggle/toggle_cubit.dart';
@@ -72,6 +73,9 @@ class AppRouter {
             child: const ProfileScreen(),
           ),
         );
+
+      case Routes.checkoutScreen:
+        return MaterialPageRoute(builder: (_) => const CheckOutScreen());
 
       default:
         null;

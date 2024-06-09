@@ -97,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: 20.h),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: ColorsManager.primary,
+                            backgroundColor: ColorsManager.primary,
                             minimumSize: Size(double.infinity, 56.h),
                           ),
                           onPressed: () async {
