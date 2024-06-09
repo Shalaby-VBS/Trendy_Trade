@@ -78,9 +78,15 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ProductsResponse> getProducts({int pageSize = 10000}) async {
+  Future<ProductsResponse> getProducts({
+    required int categoryIds,
+    int pageSize = 10000,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'PageSize': pageSize};
+    final queryParameters = <String, dynamic>{
+      r'CategoryIds': categoryIds,
+      r'PageSize': pageSize,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio

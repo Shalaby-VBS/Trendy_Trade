@@ -15,6 +15,17 @@ class ProductPlusAndMinus extends StatefulWidget {
 
 class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
   @override
+  void initState() {
+    super.initState();
+
+    for (var product in cartItems) {
+      if (product.id == widget.productModel.id) {
+        widget.productModel.quantity = product.quantity;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -38,9 +49,9 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
                   eventBus.fire(CartIconEvent(cartItems));
                 }
 
-                if (widget.productModel.quantity! > 0) {
+                if (widget.productModel.quantity > 0) {
                   widget.productModel.quantity =
-                      widget.productModel.quantity! - 1;
+                      widget.productModel.quantity - 1;
                   eventBus.fire(CartIconEvent(cartItems));
                 }
               });
@@ -53,8 +64,7 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
           width: 20,
           height: 20,
           child: Text(
-            widget.productModel.quantity == null ||
-                    widget.productModel.quantity == 0
+            widget.productModel.quantity == 0
                 ? '0'
                 : '${widget.productModel.quantity}',
             style: TextStyles.size16BlackW600,
@@ -76,10 +86,9 @@ class _ProductPlusAndMinusState extends State<ProductPlusAndMinus> {
             ),
             onPressed: () {
               setState(() {
-                if (widget.productModel.quantity == null ||
-                    widget.productModel.quantity! < 9) {
+                if (widget.productModel.quantity < 9) {
                   widget.productModel.quantity =
-                      widget.productModel.quantity! + 1;
+                      widget.productModel.quantity + 1;
                   eventBus.fire(CartIconEvent(cartItems));
                   if (!cartItems.contains(widget.productModel)) {
                     cartItems.add(widget.productModel);
