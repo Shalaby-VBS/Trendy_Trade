@@ -13,7 +13,7 @@ class _ApiService implements ApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://trendy-trade-api.tryasp.net/api/';
+    baseUrl ??= 'https://trendy-trade-api.tryasp.net/api/';
   }
 
   final Dio _dio;

@@ -143,6 +143,7 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorsManager.primary,
+                      foregroundColor: Colors.white,
                       minimumSize: Size(double.infinity, 56.h),
                     ),
                     child: const Text('Checkout'),

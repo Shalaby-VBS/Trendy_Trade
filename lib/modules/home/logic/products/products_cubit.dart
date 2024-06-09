@@ -26,8 +26,9 @@ class ProductsCubit extends Cubit<ProductsState> {
     final response = await _productsRepo.getCategories();
     response.when(
       success: (categoriesResponse) {
-        emit(ProductsState.successCategories(categoriesResponse));
-        getProducts(categoriesResponse.first.id!);
+        emit(ProductsState.successCategories(
+            categoriesResponse.reversed.toList()));
+        getProducts(categoriesResponse.reversed.toList().first.id!);
       },
       failure: (error) {
         emit(ProductsState.errorCategories(error));
