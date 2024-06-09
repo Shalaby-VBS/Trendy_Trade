@@ -1,39 +1,39 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:trendy_trade/core/helpers/extensions.dart';
 
+import '../../../../core/helpers/event_bus.dart';
+import '../../../../core/helpers/spaces.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/themes/text_styles.dart';
-import '../../logic/product/product_cubit.dart';
-import '../screens/product_details_screen.dart';
+import '../../data/models/product_model.dart';
+import 'product_image.dart';
+import 'product_plus_and_minus.dart';
 
-class ProductCard extends StatelessWidget {
-  final int? productId;
-  final String? pictureURL;
-  final String? name;
-  final String? description;
-  final num? price;
+class ProductCard extends StatefulWidget {
+  final ProductModel? productModel;
+  const ProductCard({super.key, this.productModel});
 
-  const ProductCard(
-      {super.key,
-      this.pictureURL,
-      this.name,
-      this.description,
-      this.price,
-      this.productId});
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
+  void initState() {
+    super.initState();
+    eventBus.on<CartIconEvent>().listen((event) {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => context.read<ProductCubit>(),
-            child: ProductDetailsScreen(productId: productId ?? 1),
-          ),
-        ),
-      ),
+    return InkWell(
+      onTap: () {
+        context.pushNamed(Routes.productDetailsScreen,
+            arguments: widget.productModel);
+      },
       child: Container(
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.all(16),
@@ -52,47 +52,39 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CachedNetworkImage(
-              imageUrl: pictureURL ??
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxdAOY_-vITFVI-ej84s2U_ErxhOly-z3y_Q&s',
-              height: 200,
-              color: Colors.white,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              placeholder: (context, url) => const Shimmer(
-                gradient: LinearGradient(colors: [Colors.grey, Colors.white]),
-                child: SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                ),
-              ),
-              errorWidget: (context, url, error) => const Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
+            ProductImage(
+              image: widget.productModel?.pictureURL,
             ),
             Text(
-              name!,
+              widget.productModel?.name ?? 'Product Name',
               style: TextStyles.size16BlackW600,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 8),
+            verticalSpace(8.h),
             Text(
-              description!,
+              widget.productModel?.description ?? 'Product Description',
               style: TextStyles.size14BlackW400,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 8),
-            Text(
-              price.toString(),
-              style: TextStyles.size24BlackW700,
-            ),
+            verticalSpace(12.h),
+            Row(
+              children: [
+                Text(
+                  'Price: ',
+                  style: TextStyles.size14BlackW400,
+                ),
+                Text(
+                  '${widget.productModel?.price}',
+                  style: TextStyles.size18BlackW600,
+                ),
+                const Spacer(),
+                ProductPlusAndMinus(
+                  productModel: widget.productModel!,
+                ),
+              ],
+            )
           ],
         ),
       ),

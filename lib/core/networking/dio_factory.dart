@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../helpers/constants.dart';
+import '../helpers/shared_preferences_helper.dart';
+
 class DioFactory {
   DioFactory._();
 
@@ -25,17 +28,15 @@ class DioFactory {
   static void addDioHeaders() async {
     dio?.options.headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Basic MTExODA3NjU6NjAtZGF5ZnJlZXRyaWFs",
+      'Authorization':
+          'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}',
     };
   }
 
-  static void setTokenIntoHeaderAfterLogin(String token) {
+  static void setTokenIntoHeaderAfterLogin(String token) async {
     dio?.options.headers = {
-      'Authorization': "Basic MTExODA3NjU6NjAtZGF5ZnJlZXRyaWFs",
       'Authorization':
-          // token == null ?
-          "Basic MTExODA3NjU6NjAtZGF5ZnJlZXRyaWFs"
-      // : 'Bearer $token',
+          'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}',
     };
   }
 

@@ -1,11 +1,16 @@
 class ApiUrls {
   // MARK: - ✏️ Base Url.
-  static const String baseUrl = "http://omarahmedx14-001-site1.dtempurl.com/";
+  //static const String baseUrl = "http://omarahmedx14-001-site1.dtempurl.com/";
+  static const String baseUrl = "http://trendy-trade-api.tryasp.net/api/";
 
   // MARK: - End-Points.
-  static const String login = "api/Account/login";
-  static const String register = "api/Account/register";
-  static const String products = "api/Product";
+  static const String login = "Account/login";
+  static const String register = "Account/register";
+  static const String products = "Product";
+  static const String addToCart = "Cart/update";
+  static const String getCart = "Cart";
+  static const String profile = "Account";
+  static const String getCategories = "ProductCategory";
 }
 
 class ApiErrors {
