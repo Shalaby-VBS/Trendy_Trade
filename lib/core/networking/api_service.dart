@@ -40,6 +40,9 @@ abstract class ApiService {
   @GET(ApiUrls.getCart)
   Future<GetCartResponseModel> getCartItems();
 
+  @GET(ApiUrls.profile)
+  Future<LoginResponse> getProfileData();
+
   @GET(ApiUrls.getCategories)
   Future<List<CategoriesResponseModel>> getCategories();
 }

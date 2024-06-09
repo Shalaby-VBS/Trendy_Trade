@@ -2,10 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trendy_trade/core/helpers/extensions.dart';
-import 'package:trendy_trade/core/helpers/spaces.dart';
 import 'package:trendy_trade/core/themes/text_styles.dart';
 
 import '../../../core/helpers/event_bus.dart';
+import '../../../core/routing/routes.dart';
+import '../../../core/themes/colors_manager.dart';
 import '../../../core/widgets/appbars.dart';
 import '../../home/ui/widgets/product_plus_and_minus.dart';
 
@@ -138,19 +139,14 @@ class _CartScreenState extends State<CartScreen> {
                   const Spacer(),
                   ElevatedButton(
                     onPressed: () {
-                      // start check out process
+                      context.pushNamed(Routes.checkoutScreen);
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.purple,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0,
-                        vertical: 15.0,
-                      ),
+                      backgroundColor: ColorsManager.primary,
+                      minimumSize: Size(double.infinity, 56.h),
                     ),
                     child: const Text('Checkout'),
                   ),
-                  verticalSpace(20),
                 ],
               ),
       ),

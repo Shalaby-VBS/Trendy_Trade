@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trendy_trade/core/helpers/extensions.dart';
-import 'package:trendy_trade/core/themes/colors_manager.dart';
 
 class AppBarBackButton extends StatelessWidget {
   const AppBarBackButton({super.key});
@@ -17,7 +16,7 @@ class AppBarBackButton extends StatelessWidget {
       style: const ButtonStyle(
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      color: ColorsManager.greyLightest,
+      color: Colors.white,
       iconSize: 26.sp,
       icon: const Icon(Icons.arrow_back_ios_new),
     );

@@ -7,4 +7,5 @@ class Routes {
   static const String cartScreen = "/cartScreen";
   static const String orderScreen = "/orderScreen";
   static const String profileScreen = "/profileScreen";
+  static const String checkoutScreen = "/checkoutScreen";
 }
