@@ -27,6 +27,7 @@ abstract class ApiService {
 
   @GET(ApiUrls.products)
   Future<ProductsResponse> getProducts({
+    @Query('CategoryIds') required int categoryIds,
     @Query('PageSize') int pageSize = 10000,
   });
 

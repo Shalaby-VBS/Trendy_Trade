@@ -1,7 +1,7 @@
 class ApiUrls {
   // MARK: - ✏️ Base Url.
   //static const String baseUrl = "http://omarahmedx14-001-site1.dtempurl.com/";
-  static const String baseUrl = "http://trendy-trade-api.tryasp.net/api/";
+  static const String baseUrl = "https://trendy-trade-api.tryasp.net/api/";
 
   // MARK: - End-Points.
   static const String login = "Account/login";

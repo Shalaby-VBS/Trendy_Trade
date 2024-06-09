@@ -101,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                             minimumSize: Size(double.infinity, 56.h),
                           ),
                           onPressed: () async {
-                            await SharedPrefHelper.clearAllData();
+                            await SharedPrefHelper.clearAllSecuredData();
                             if (context.mounted) {
                               context.pushNamedAndRemoveUntil(
                                 Routes.loginScreen,
@@ -117,20 +117,6 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
         ),
-        // Center(
-        //   child: InkWell(
-        //     onTap: () async {
-        //       await SharedPrefHelper.clearAllData();
-        //       if (context.mounted) {
-        //         context.pushNamedAndRemoveUntil(
-        //           Routes.loginScreen,
-        //           predicate: (route) => false,
-        //         );
-        //       }
-        //     },
-        //     child: Text('Logut', style: TextStyles.size20BlackW600),
-        //   ),
-        // ),
       ),
     );
   }
